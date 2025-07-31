@@ -1,3 +1,4 @@
+import { createFileRoute } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import {
   DndContext,
@@ -21,14 +22,14 @@ import { restrictToWindowEdges } from '@dnd-kit/modifiers';
 import { GridHeader } from '@/components/GridHeader';
 import { ItemList } from '@/components/ItemList';
 import { CreateListPlaceholder } from '@/components/CreateListPlaceholder';
-import { useGridData } from '@/hooks/useGridData';
+import { useGridStore } from '@/store/useGridStore';
 import { useState } from 'react';
 import { ItemList as ItemListType } from '@/types';
 
-const Index = () => {
+function IndexPage() {
   const {
-    data,
-    currentGrid,
+    grids,
+    currentGridId,
     createGrid,
     selectGrid,
     updateGridTitle,
@@ -40,10 +41,12 @@ const Index = () => {
     deleteItem,
     reorderLists,
     reorderItems,
-  } = useGridData();
+  } = useGridStore();
 
   const [activeId, setActiveId] = useState<string | null>(null);
   const [activeDraggedItem, setActiveDraggedItem] = useState<ItemListType | null>(null);
+
+  const currentGrid = grids.find(g => g.id === currentGridId) || null;
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -54,10 +57,10 @@ const Index = () => {
 
   // Create first grid if none exists
   useEffect(() => {
-    if (data.grids.length === 0) {
+    if (grids.length === 0) {
       createGrid('My Task Board');
     }
-  }, [data.grids.length, createGrid]);
+  }, [grids.length, createGrid]);
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);
@@ -157,7 +160,7 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-surface">
       <GridHeader
         currentGrid={currentGrid}
-        grids={data.grids}
+        grids={grids}
         onGridSelect={selectGrid}
         onGridCreate={() => createGrid()}
         onGridTitleUpdate={updateGridTitle}
@@ -211,6 +214,8 @@ const Index = () => {
       </div>
     </div>
   );
-};
+}
 
-export default Index;
+export const Route = createFileRoute('/')({
+  component: IndexPage,
+});

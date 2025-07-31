@@ -137,18 +137,20 @@ export function ItemList({
       {/* Items */}
       <div
         ref={setDroppableRef}
-        className="flex-1 p-4 space-y-2 min-h-[200px] max-h-[600px] overflow-y-auto"
+        className="flex-1 p-4 min-h-[200px] max-h-[600px] overflow-y-auto"
       >
-        <SortableContext items={list.items.map(item => item.id)} strategy={verticalListSortingStrategy}>
-          {list.items.map((item) => (
-            <ItemCard
-              key={item.id}
-              item={item}
-              onUpdate={(updatedItem) => onItemUpdate(list.id, updatedItem)}
-              onDelete={(itemId) => onItemDelete(list.id, itemId)}
-            />
-          ))}
-        </SortableContext>
+        <div className="space-y-2">
+          <SortableContext items={list.items.map(item => item.id)} strategy={verticalListSortingStrategy}>
+            {list.items.map((item) => (
+              <ItemCard
+                key={item.id}
+                item={item}
+                onUpdate={(updatedItem) => onItemUpdate(list.id, updatedItem)}
+                onDelete={(itemId) => onItemDelete(list.id, itemId)}
+              />
+            ))}
+          </SortableContext>
+        </div>
       </div>
 
       {/* Add Item */}
