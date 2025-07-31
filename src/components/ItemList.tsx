@@ -139,7 +139,7 @@ export function ItemList({
         ref={setDroppableRef}
         className="flex-1 p-4 min-h-[200px] max-h-[600px] overflow-y-auto"
       >
-        <div className="space-y-2">
+        <div className="flex flex-col space-y-2">
           <SortableContext items={list.items.map(item => item.id)} strategy={verticalListSortingStrategy}>
             {list.items.map((item) => (
               <ItemCard
