@@ -32,6 +32,7 @@ export function BoardTitleWithDelete({
   className,
 }: BoardTitleWithDeleteProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -49,7 +50,10 @@ export function BoardTitleWithDelete({
   };
 
   const handleDelete = () => {
-    onGridDelete(currentGrid.id);
+    // Extra safety check
+    if (canDelete) {
+      onGridDelete(currentGrid.id);
+    }
     setIsOpen(false);
   };
 
@@ -62,7 +66,7 @@ export function BoardTitleWithDelete({
     };
   }, []);
 
-  // Don't show delete button if it's the only grid
+  // Disable delete button if it's the only grid
   const canDelete = grids.length > 1;
 
   return (
@@ -77,27 +81,31 @@ export function BoardTitleWithDelete({
         variant="title"
         placeholder="Untitled Grid"
         className="text-center"
+        onEditingChange={setIsEditing}
       />
 
-      {canDelete && (
+      {isEditing && (
         <>
-          {/* Extended hover area to bridge the gap between title and button */}
-          <div className="absolute inset-y-0 right-0 w-8 -mr-2" />
-
           <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
             <AlertDialogTrigger asChild>
               <Button
                 variant="ghost"
                 size="sm"
+                disabled={!canDelete}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 className={cn(
-                  "absolute -right-6 h-6 w-6 p-0 text-muted-foreground hover:text-destructive transition-all duration-200 z-10",
-                  isHovered ? "opacity-100 scale-100" : "opacity-0 scale-95",
+                  "absolute -right-6 h-6 w-6 p-0 transition-all duration-200 z-10",
+                  canDelete
+                    ? "text-muted-foreground hover:text-destructive"
+                    : "text-muted-foreground/50 cursor-not-allowed",
+                  "opacity-100 scale-100",
                 )}
               >
                 <Trash2 className="h-3 w-3" />
-                <span className="sr-only">Delete board</span>
+                <span className="sr-only">
+                  {canDelete ? "Delete board" : "Cannot delete the last board"}
+                </span>
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>

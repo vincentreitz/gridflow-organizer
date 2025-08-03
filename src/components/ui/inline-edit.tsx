@@ -7,6 +7,7 @@ interface InlineEditProps {
   className?: string;
   placeholder?: string;
   variant?: "title" | "subtitle" | "text";
+  onEditingChange?: (isEditing: boolean) => void;
 }
 
 export function InlineEdit({
@@ -15,6 +16,7 @@ export function InlineEdit({
   className,
   placeholder = "Click to edit...",
   variant = "text",
+  onEditingChange,
 }: InlineEditProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(value);
@@ -29,7 +31,8 @@ export function InlineEdit({
       inputRef.current.focus();
       inputRef.current.select();
     }
-  }, [isEditing]);
+    onEditingChange?.(isEditing);
+  }, [isEditing, onEditingChange]);
 
   const handleSave = () => {
     const trimmedValue = editValue.trim();

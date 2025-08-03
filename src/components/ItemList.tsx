@@ -1,27 +1,26 @@
-import { useDroppable } from "@dnd-kit/core";
-import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { GripVertical, Plus, Trash2 } from "lucide-react";
-import { useState } from "react";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { InlineEdit } from "@/components/ui/inline-edit";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import type { GridItem, ItemList as ItemListType } from "@/types";
+import { useDroppable } from "@dnd-kit/core";
+import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { GripVertical, Plus, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { ItemCard } from "./ItemCard";
 
 interface ItemListProps {
@@ -83,7 +82,7 @@ export function ItemList({
       ref={setSortableRef}
       style={style}
       className={cn(
-        "flex flex-col w-80 min-w-80 max-w-96 shadow-sm hover:shadow-md transition-all",
+        "flex flex-col w-80 min-w-80 max-w-96 h-fit shadow-sm hover:shadow-md transition-all",
         isDragging && "opacity-50",
       )}
     >
@@ -143,24 +142,22 @@ export function ItemList({
       <Separator />
 
       {/* Items */}
-      <CardContent className="flex-1 p-0">
-        <ScrollArea className="h-[400px] p-4">
-          <div ref={setDroppableRef} className="flex flex-col space-y-2">
-            <SortableContext
-              items={list.items.map((item) => item.id)}
-              strategy={verticalListSortingStrategy}
-            >
-              {list.items.map((item) => (
-                <ItemCard
-                  key={item.id}
-                  item={item}
-                  onUpdate={(updatedItem) => onItemUpdate(list.id, updatedItem)}
-                  onDelete={(itemId) => onItemDelete(list.id, itemId)}
-                />
-              ))}
-            </SortableContext>
-          </div>
-        </ScrollArea>
+      <CardContent className="flex-1 p-4">
+        <div ref={setDroppableRef} className="flex flex-col space-y-2">
+          <SortableContext
+            items={list.items.map((item) => item.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            {list.items.map((item) => (
+              <ItemCard
+                key={item.id}
+                item={item}
+                onUpdate={(updatedItem) => onItemUpdate(list.id, updatedItem)}
+                onDelete={(itemId) => onItemDelete(list.id, itemId)}
+              />
+            ))}
+          </SortableContext>
+        </div>
       </CardContent>
 
       <Separator />

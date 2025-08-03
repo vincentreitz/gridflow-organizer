@@ -1,30 +1,29 @@
-import {
-  closestCorners,
-  DndContext,
-  type DragEndEvent,
-  type DragOverEvent,
-  DragOverlay,
-  type DragStartEvent,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import { restrictToWindowEdges } from "@dnd-kit/modifiers";
-import {
-  horizontalListSortingStrategy,
-  SortableContext,
-  sortableKeyboardCoordinates,
-} from "@dnd-kit/sortable";
-import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
 import { CreateListPlaceholder } from "@/components/CreateListPlaceholder";
 import { GridHeader } from "@/components/GridHeader";
 import { ItemList } from "@/components/ItemList";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useGridStore } from "@/store/useGridStore";
 import type { ItemList as ItemListType } from "@/types";
+import {
+    closestCorners,
+    DndContext,
+    type DragEndEvent,
+    type DragOverEvent,
+    DragOverlay,
+    type DragStartEvent,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+} from "@dnd-kit/core";
+import { restrictToWindowEdges } from "@dnd-kit/modifiers";
+import {
+    horizontalListSortingStrategy,
+    SortableContext,
+    sortableKeyboardCoordinates,
+} from "@dnd-kit/sortable";
+import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 
 function IndexPage() {
   const {
@@ -185,29 +184,26 @@ function IndexPage() {
           onDragEnd={handleDragEnd}
           modifiers={[restrictToWindowEdges]}
         >
-          <ScrollArea className="w-full">
-            <div className="flex gap-6 pb-6">
-              <SortableContext
-                items={currentGrid.lists.map((list) => list.id)}
-                strategy={horizontalListSortingStrategy}
-              >
-                {currentGrid.lists.map((list) => (
-                  <ItemList
-                    key={list.id}
-                    list={list}
-                    onUpdate={(updatedList) => updateList(list.id, updatedList)}
-                    onDelete={deleteList}
-                    onItemAdd={addItem}
-                    onItemUpdate={updateItem}
-                    onItemDelete={deleteItem}
-                  />
-                ))}
-              </SortableContext>
+          <div className="flex flex-wrap gap-6">
+            <SortableContext
+              items={currentGrid.lists.map((list) => list.id)}
+              strategy={horizontalListSortingStrategy}
+            >
+              {currentGrid.lists.map((list) => (
+                <ItemList
+                  key={list.id}
+                  list={list}
+                  onUpdate={(updatedList) => updateList(list.id, updatedList)}
+                  onDelete={deleteList}
+                  onItemAdd={addItem}
+                  onItemUpdate={updateItem}
+                  onItemDelete={deleteItem}
+                />
+              ))}
+            </SortableContext>
 
-              <CreateListPlaceholder onCreateList={createList} />
-            </div>
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
+            <CreateListPlaceholder onCreateList={createList} />
+          </div>
 
           <DragOverlay>
             {activeId && activeDraggedItem ? (
