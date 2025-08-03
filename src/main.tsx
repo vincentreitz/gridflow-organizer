@@ -8,7 +8,7 @@ import './index.css';
 // Create a new router instance
 const router = createRouter({
   routeTree,
-} as any);
+});
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

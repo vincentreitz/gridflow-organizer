@@ -1,6 +1,8 @@
 import { Plus, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { InlineEdit } from '@/components/ui/inline-edit';
+import { Card } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { BoardTitleWithDelete } from '@/components/BoardTitleWithDelete';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,7 +10,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { SimpleThemeToggle } from '@/components/theme-toggle';
 import { Grid } from '@/types';
+import { cn } from '@/lib/utils';
 
 interface GridHeaderProps {
   currentGrid: Grid | null;
@@ -16,6 +20,7 @@ interface GridHeaderProps {
   onGridSelect: (gridId: string) => void;
   onGridCreate: () => void;
   onGridTitleUpdate: (title: string) => void;
+  onGridDelete: (gridId: string) => void;
 }
 
 export function GridHeader({
@@ -24,24 +29,27 @@ export function GridHeader({
   onGridSelect,
   onGridCreate,
   onGridTitleUpdate,
+  onGridDelete,
 }: GridHeaderProps) {
   return (
-    <div className="flex items-center justify-between p-6 border-b border-border/40 bg-gradient-card">
+    <Card className="flex items-center justify-between p-6 shadow-md">
       <div className="flex-1" />
       
       <div className="flex-1 flex justify-center">
         {currentGrid && (
-          <InlineEdit
-            value={currentGrid.title}
-            onSave={onGridTitleUpdate}
-            variant="title"
-            placeholder="Untitled Grid"
+          <BoardTitleWithDelete
+            currentGrid={currentGrid}
+            onGridTitleUpdate={onGridTitleUpdate}
+            onGridDelete={onGridDelete}
+            grids={grids}
             className="text-center"
           />
         )}
       </div>
 
       <div className="flex-1 flex justify-end items-center gap-2">
+        <SimpleThemeToggle />
+        
         <Button
           onClick={onGridCreate}
           size="sm"
@@ -79,6 +87,6 @@ export function GridHeader({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-    </div>
+    </Card>
   );
 }

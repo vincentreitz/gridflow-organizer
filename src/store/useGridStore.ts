@@ -6,6 +6,7 @@ import { AppData, Grid, ItemList, GridItem } from '@/types';
 interface GridStore extends AppData {
   // Actions
   createGrid: (title?: string) => string;
+  deleteGrid: (gridId: string) => void;
   selectGrid: (gridId: string) => void;
   updateGridTitle: (title: string) => void;
   createList: (title: string) => void;
@@ -37,6 +38,24 @@ export const useGridStore = create<GridStore>()(
         }));
 
         return newGrid.id;
+      },
+
+      deleteGrid: (gridId: string) => {
+        const { grids, currentGridId } = get();
+        
+        // Remove the grid
+        const newGrids = grids.filter(grid => grid.id !== gridId);
+        
+        // If we're deleting the current grid, select another one or set to null
+        let newCurrentGridId = currentGridId;
+        if (currentGridId === gridId) {
+          newCurrentGridId = newGrids.length > 0 ? newGrids[0].id : null;
+        }
+        
+        set({
+          grids: newGrids,
+          currentGridId: newCurrentGridId,
+        });
       },
 
       selectGrid: (gridId: string) => {

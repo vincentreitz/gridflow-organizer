@@ -4,8 +4,8 @@ import {
   DndContext,
   DragEndEvent,
   DragOverEvent,
-  DragOverlay,
   DragStartEvent,
+  DragOverlay,
   closestCorners,
   KeyboardSensor,
   PointerSensor,
@@ -19,18 +19,22 @@ import {
 } from '@dnd-kit/sortable';
 import { restrictToWindowEdges } from '@dnd-kit/modifiers';
 
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { GridHeader } from '@/components/GridHeader';
 import { ItemList } from '@/components/ItemList';
 import { CreateListPlaceholder } from '@/components/CreateListPlaceholder';
 import { useGridStore } from '@/store/useGridStore';
 import { useState } from 'react';
 import { ItemList as ItemListType } from '@/types';
+import { cn } from '@/lib/utils';
 
 function IndexPage() {
   const {
     grids,
     currentGridId,
     createGrid,
+    deleteGrid,
     selectGrid,
     updateGridTitle,
     createList,
@@ -148,10 +152,14 @@ function IndexPage() {
   if (!currentGrid) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">No Grid Selected</h1>
-          <p className="text-muted-foreground">Create your first grid to get started.</p>
-        </div>
+        <Card className="text-center max-w-md">
+          <CardHeader>
+            <CardTitle>No Grid Selected</CardTitle>
+            <CardDescription>
+              Create your first grid to get started organizing your tasks.
+            </CardDescription>
+          </CardHeader>
+        </Card>
       </div>
     );
   }
@@ -164,6 +172,7 @@ function IndexPage() {
         onGridSelect={selectGrid}
         onGridCreate={() => createGrid()}
         onGridTitleUpdate={updateGridTitle}
+        onGridDelete={deleteGrid}
       />
 
       <div className="p-6">
@@ -175,26 +184,29 @@ function IndexPage() {
           onDragEnd={handleDragEnd}
           modifiers={[restrictToWindowEdges]}
         >
-          <div className="flex gap-6 overflow-x-auto pb-6">
-            <SortableContext
-              items={currentGrid.lists.map(list => list.id)}
-              strategy={horizontalListSortingStrategy}
-            >
-              {currentGrid.lists.map((list) => (
-                <ItemList
-                  key={list.id}
-                  list={list}
-                  onUpdate={(updatedList) => updateList(list.id, updatedList)}
-                  onDelete={deleteList}
-                  onItemAdd={addItem}
-                  onItemUpdate={updateItem}
-                  onItemDelete={deleteItem}
-                />
-              ))}
-            </SortableContext>
+          <ScrollArea className="w-full">
+            <div className="flex gap-6 pb-6">
+              <SortableContext
+                items={currentGrid.lists.map(list => list.id)}
+                strategy={horizontalListSortingStrategy}
+              >
+                {currentGrid.lists.map((list) => (
+                  <ItemList
+                    key={list.id}
+                    list={list}
+                    onUpdate={(updatedList) => updateList(list.id, updatedList)}
+                    onDelete={deleteList}
+                    onItemAdd={addItem}
+                    onItemUpdate={updateItem}
+                    onItemDelete={deleteItem}
+                  />
+                ))}
+              </SortableContext>
 
-            <CreateListPlaceholder onCreateList={createList} />
-          </div>
+              <CreateListPlaceholder onCreateList={createList} />
+            </div>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
 
           <DragOverlay>
             {activeId && activeDraggedItem ? (
