@@ -43,7 +43,7 @@ If you need to deploy manually:
 
 ## Tech Stack
 
-- **Frontend**: React 18, TypeScript
+- **Frontend**: React 19, TypeScript
 - **Build Tool**: Vite
 - **Styling**: Tailwind CSS, shadcn/ui
 - **State Management**: Zustand

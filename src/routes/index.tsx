@@ -1,29 +1,29 @@
+import {
+  closestCorners,
+  DndContext,
+  type DragEndEvent,
+  type DragOverEvent,
+  DragOverlay,
+  type DragStartEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import { restrictToWindowEdges } from "@dnd-kit/modifiers";
+import {
+  horizontalListSortingStrategy,
+  SortableContext,
+  sortableKeyboardCoordinates,
+} from "@dnd-kit/sortable";
+import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { CreateListPlaceholder } from "@/components/CreateListPlaceholder";
 import { GridHeader } from "@/components/GridHeader";
 import { ItemList } from "@/components/ItemList";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useGridStore } from "@/store/useGridStore";
 import type { ItemList as ItemListType } from "@/types";
-import {
-    closestCorners,
-    DndContext,
-    type DragEndEvent,
-    type DragOverEvent,
-    DragOverlay,
-    type DragStartEvent,
-    KeyboardSensor,
-    PointerSensor,
-    useSensor,
-    useSensors,
-} from "@dnd-kit/core";
-import { restrictToWindowEdges } from "@dnd-kit/modifiers";
-import {
-    horizontalListSortingStrategy,
-    SortableContext,
-    sortableKeyboardCoordinates,
-} from "@dnd-kit/sortable";
-import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
 
 function IndexPage() {
   const {

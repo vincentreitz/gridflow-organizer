@@ -21,7 +21,10 @@ if (!rootElement) {
   throw new Error("Root element not found");
 }
 
-createRoot(rootElement).render(
+// React 19: createRoot now returns a root object that we can call render on
+const root = createRoot(rootElement);
+
+root.render(
   <StrictMode>
     <App>
       <RouterProvider router={router} />
