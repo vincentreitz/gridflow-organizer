@@ -26,6 +26,47 @@ npm run build
 npm run preview
 ```
 
+## Code Quality
+
+This project uses Biome for code formatting and linting. The following scripts are available:
+
+```bash
+# Format code
+npm run format
+
+# Check formatting without making changes
+npm run format:check
+
+# Lint code
+npm run lint
+
+# Fix linting issues
+npm run lint:fix
+
+# Run all checks (format + lint)
+npm run check
+```
+
+### Pre-commit Hooks
+
+The project includes pre-commit hooks that automatically:
+- Format your code using Biome
+- Fix linting issues
+- Add modified files to staging
+
+These hooks run automatically when you commit changes.
+
+### GitHub Actions
+
+The project includes a GitHub Actions workflow that:
+- Runs on push to main/develop branches
+- Runs on pull requests to main/develop branches
+- Checks code formatting
+- Runs linting checks
+- Validates TypeScript types
+
+This ensures code quality is maintained before merging changes.
+
 ## Deployment
 
 This project is automatically deployed to GitHub Pages when changes are pushed to the main branch.
@@ -50,3 +91,6 @@ If you need to deploy manually:
 - **Routing**: TanStack Router
 - **Drag & Drop**: @dnd-kit
 - **Icons**: Lucide React
+- **Code Quality**: Biome (formatting & linting)
+- **Git Hooks**: Husky
+- **CI/CD**: GitHub Actions
