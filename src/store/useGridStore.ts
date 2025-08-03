@@ -1,7 +1,7 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { nanoid } from 'nanoid';
-import { AppData, Grid, ItemList, GridItem } from '@/types';
+import { nanoid } from "nanoid";
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import type { AppData, Grid, GridItem, ItemList } from "@/types";
 
 interface GridStore extends AppData {
   // Actions
@@ -25,7 +25,7 @@ export const useGridStore = create<GridStore>()(
       grids: [],
       currentGridId: null,
 
-      createGrid: (title = 'New Grid') => {
+      createGrid: (title = "New Grid") => {
         const newGrid: Grid = {
           id: nanoid(),
           title,
@@ -42,16 +42,16 @@ export const useGridStore = create<GridStore>()(
 
       deleteGrid: (gridId: string) => {
         const { grids, currentGridId } = get();
-        
+
         // Remove the grid
-        const newGrids = grids.filter(grid => grid.id !== gridId);
-        
+        const newGrids = grids.filter((grid) => grid.id !== gridId);
+
         // If we're deleting the current grid, select another one or set to null
         let newCurrentGridId = currentGridId;
         if (currentGridId === gridId) {
           newCurrentGridId = newGrids.length > 0 ? newGrids[0].id : null;
         }
-        
+
         set({
           grids: newGrids,
           currentGridId: newCurrentGridId,
@@ -67,11 +67,7 @@ export const useGridStore = create<GridStore>()(
         if (!currentGridId) return;
 
         set((state) => ({
-          grids: state.grids.map(grid =>
-            grid.id === currentGridId
-              ? { ...grid, title }
-              : grid
-          ),
+          grids: state.grids.map((grid) => (grid.id === currentGridId ? { ...grid, title } : grid)),
         }));
       },
 
@@ -79,7 +75,7 @@ export const useGridStore = create<GridStore>()(
         const { currentGridId, grids } = get();
         if (!currentGridId) return;
 
-        const currentGrid = grids.find(g => g.id === currentGridId);
+        const currentGrid = grids.find((g) => g.id === currentGridId);
         const newList: ItemList = {
           id: nanoid(),
           title,
@@ -88,10 +84,8 @@ export const useGridStore = create<GridStore>()(
         };
 
         set((state) => ({
-          grids: state.grids.map(grid =>
-            grid.id === currentGridId
-              ? { ...grid, lists: [...grid.lists, newList] }
-              : grid
+          grids: state.grids.map((grid) =>
+            grid.id === currentGridId ? { ...grid, lists: [...grid.lists, newList] } : grid,
           ),
         }));
       },
@@ -101,15 +95,15 @@ export const useGridStore = create<GridStore>()(
         if (!currentGridId) return;
 
         set((state) => ({
-          grids: state.grids.map(grid =>
+          grids: state.grids.map((grid) =>
             grid.id === currentGridId
               ? {
                   ...grid,
-                  lists: grid.lists.map(list =>
-                    list.id === listId ? { ...list, ...updates } : list
+                  lists: grid.lists.map((list) =>
+                    list.id === listId ? { ...list, ...updates } : list,
                   ),
                 }
-              : grid
+              : grid,
           ),
         }));
       },
@@ -119,10 +113,10 @@ export const useGridStore = create<GridStore>()(
         if (!currentGridId) return;
 
         set((state) => ({
-          grids: state.grids.map(grid =>
+          grids: state.grids.map((grid) =>
             grid.id === currentGridId
-              ? { ...grid, lists: grid.lists.filter(list => list.id !== listId) }
-              : grid
+              ? { ...grid, lists: grid.lists.filter((list) => list.id !== listId) }
+              : grid,
           ),
         }));
       },
@@ -131,8 +125,8 @@ export const useGridStore = create<GridStore>()(
         const { currentGridId, grids } = get();
         if (!currentGridId) return;
 
-        const currentGrid = grids.find(g => g.id === currentGridId);
-        const list = currentGrid?.lists.find(l => l.id === listId);
+        const currentGrid = grids.find((g) => g.id === currentGridId);
+        const list = currentGrid?.lists.find((l) => l.id === listId);
         if (!list) return;
 
         const newItem: GridItem = {
@@ -142,17 +136,15 @@ export const useGridStore = create<GridStore>()(
         };
 
         set((state) => ({
-          grids: state.grids.map(grid =>
+          grids: state.grids.map((grid) =>
             grid.id === currentGridId
               ? {
                   ...grid,
-                  lists: grid.lists.map(l =>
-                    l.id === listId
-                      ? { ...l, items: [...l.items, newItem] }
-                      : l
+                  lists: grid.lists.map((l) =>
+                    l.id === listId ? { ...l, items: [...l.items, newItem] } : l,
                   ),
                 }
-              : grid
+              : grid,
           ),
         }));
       },
@@ -162,22 +154,20 @@ export const useGridStore = create<GridStore>()(
         if (!currentGridId) return;
 
         set((state) => ({
-          grids: state.grids.map(grid =>
+          grids: state.grids.map((grid) =>
             grid.id === currentGridId
               ? {
                   ...grid,
-                  lists: grid.lists.map(list =>
+                  lists: grid.lists.map((list) =>
                     list.id === listId
                       ? {
                           ...list,
-                          items: list.items.map(i =>
-                            i.id === item.id ? item : i
-                          ),
+                          items: list.items.map((i) => (i.id === item.id ? item : i)),
                         }
-                      : list
+                      : list,
                   ),
                 }
-              : grid
+              : grid,
           ),
         }));
       },
@@ -187,17 +177,17 @@ export const useGridStore = create<GridStore>()(
         if (!currentGridId) return;
 
         set((state) => ({
-          grids: state.grids.map(grid =>
+          grids: state.grids.map((grid) =>
             grid.id === currentGridId
               ? {
                   ...grid,
-                  lists: grid.lists.map(list =>
+                  lists: grid.lists.map((list) =>
                     list.id === listId
-                      ? { ...list, items: list.items.filter(item => item.id !== itemId) }
-                      : list
+                      ? { ...list, items: list.items.filter((item) => item.id !== itemId) }
+                      : list,
                   ),
                 }
-              : grid
+              : grid,
           ),
         }));
       },
@@ -207,16 +197,18 @@ export const useGridStore = create<GridStore>()(
         if (!currentGridId) return;
 
         set((state) => ({
-          grids: state.grids.map(grid =>
+          grids: state.grids.map((grid) =>
             grid.id === currentGridId
               ? {
                   ...grid,
-                  lists: listIds.map((id, index) => {
-                    const list = grid.lists.find(l => l.id === id);
-                    return list ? { ...list, order: index } : list;
-                  }).filter(Boolean) as ItemList[],
+                  lists: listIds
+                    .map((id, index) => {
+                      const list = grid.lists.find((l) => l.id === id);
+                      return list ? { ...list, order: index } : list;
+                    })
+                    .filter(Boolean) as ItemList[],
                 }
-              : grid
+              : grid,
           ),
         }));
       },
@@ -226,30 +218,32 @@ export const useGridStore = create<GridStore>()(
         if (!currentGridId) return;
 
         set((state) => ({
-          grids: state.grids.map(grid =>
+          grids: state.grids.map((grid) =>
             grid.id === currentGridId
               ? {
                   ...grid,
-                  lists: grid.lists.map(list =>
+                  lists: grid.lists.map((list) =>
                     list.id === listId
                       ? {
                           ...list,
-                          items: itemIds.map((id, index) => {
-                            const item = list.items.find(i => i.id === id);
-                            return item ? { ...item, order: index } : item;
-                          }).filter(Boolean) as GridItem[],
+                          items: itemIds
+                            .map((id, index) => {
+                              const item = list.items.find((i) => i.id === id);
+                              return item ? { ...item, order: index } : item;
+                            })
+                            .filter(Boolean) as GridItem[],
                         }
-                      : list
+                      : list,
                   ),
                 }
-              : grid
+              : grid,
           ),
         }));
       },
     }),
     {
-      name: 'task-organizer-store',
+      name: "task-organizer-store",
       version: 1,
-    }
-  )
+    },
+  ),
 );

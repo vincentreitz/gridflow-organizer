@@ -37,17 +37,17 @@
 
     --success: 142 76% 36%;
     --warning: 38 92% 50%;
-    
+
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
     --gradient-surface: linear-gradient(145deg, hsl(240 6% 8%), hsl(240 5% 12%));
     --gradient-card: linear-gradient(145deg, hsl(240 8% 9%), hsl(240 6% 13%));
-    
+
     /* Effects */
     --shadow-glow: 0 0 40px hsl(var(--primary) / 0.15);
     --shadow-card: 0 8px 32px hsl(240 20% 2% / 0.4);
     --shadow-elevated: 0 20px 40px hsl(240 20% 2% / 0.6);
-    
+
     --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
@@ -100,7 +100,7 @@
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
     --gradient-surface: linear-gradient(145deg, hsl(0 0% 98%), hsl(240 12% 96%));
     --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(240 20% 99%));
-    
+
     --shadow-glow: 0 0 40px hsl(var(--primary) / 0.1);
     --shadow-card: 0 8px 32px hsl(240 20% 15% / 0.08);
     --shadow-elevated: 0 20px 40px hsl(240 20% 15% / 0.12);
@@ -120,7 +120,11 @@
 
   /* Smooth transitions */
   * {
-    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.2s ease;
   }
 
   /* Custom scrollbar */

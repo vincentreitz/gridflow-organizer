@@ -1,18 +1,8 @@
-import { useState } from 'react';
-import { Plus, Trash2, GripVertical } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
-import { InlineEdit } from '@/components/ui/inline-edit';
-import { ItemCard } from './ItemCard';
-import { ItemList as ItemListType, GridItem } from '@/types';
-import { useSortable } from '@dnd-kit/sortable';
-import { useDroppable } from '@dnd-kit/core';
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { cn } from '@/lib/utils';
+import { useDroppable } from "@dnd-kit/core";
+import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { GripVertical, Plus, Trash2 } from "lucide-react";
+import { useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,7 +13,16 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { InlineEdit } from "@/components/ui/inline-edit";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
+import type { GridItem, ItemList as ItemListType } from "@/types";
+import { ItemCard } from "./ItemCard";
 
 interface ItemListProps {
   list: ItemListType;
@@ -42,7 +41,7 @@ export function ItemList({
   onItemUpdate,
   onItemDelete,
 }: ItemListProps) {
-  const [newItemTitle, setNewItemTitle] = useState('');
+  const [newItemTitle, setNewItemTitle] = useState("");
 
   const {
     attributes,
@@ -69,12 +68,12 @@ export function ItemList({
   const handleAddItem = () => {
     if (newItemTitle.trim()) {
       onItemAdd(list.id, newItemTitle.trim());
-      setNewItemTitle('');
+      setNewItemTitle("");
     }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleAddItem();
     }
   };
@@ -85,7 +84,7 @@ export function ItemList({
       style={style}
       className={cn(
         "flex flex-col w-80 min-w-80 max-w-96 shadow-sm hover:shadow-md transition-all",
-        isDragging && "opacity-50"
+        isDragging && "opacity-50",
       )}
     >
       {/* List Header */}
@@ -99,7 +98,7 @@ export function ItemList({
             >
               <GripVertical className="h-4 w-4" />
             </button>
-            
+
             <InlineEdit
               value={list.title}
               onSave={handleTitleUpdate}
@@ -123,8 +122,8 @@ export function ItemList({
               <AlertDialogHeader>
                 <AlertDialogTitle>Delete List</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Are you sure you want to delete "{list.title || 'Untitled List'}"? 
-                  This action cannot be undone and will remove all items in this list.
+                  Are you sure you want to delete "{list.title || "Untitled List"}"? This action
+                  cannot be undone and will remove all items in this list.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -146,11 +145,11 @@ export function ItemList({
       {/* Items */}
       <CardContent className="flex-1 p-0">
         <ScrollArea className="h-[400px] p-4">
-          <div
-            ref={setDroppableRef}
-            className="flex flex-col space-y-2"
-          >
-            <SortableContext items={list.items.map(item => item.id)} strategy={verticalListSortingStrategy}>
+          <div ref={setDroppableRef} className="flex flex-col space-y-2">
+            <SortableContext
+              items={list.items.map((item) => item.id)}
+              strategy={verticalListSortingStrategy}
+            >
               {list.items.map((item) => (
                 <ItemCard
                   key={item.id}
@@ -176,11 +175,7 @@ export function ItemList({
             placeholder="Add new item..."
             className="flex-1"
           />
-          <Button
-            onClick={handleAddItem}
-            size="sm"
-            disabled={!newItemTitle.trim()}
-          >
+          <Button onClick={handleAddItem} size="sm" disabled={!newItemTitle.trim()}>
             <Plus className="h-4 w-4" />
           </Button>
         </div>

@@ -1,20 +1,20 @@
-import { useState, useEffect, useRef } from 'react';
-import { cn } from '@/lib/utils';
+import { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface InlineEditProps {
   value: string;
   onSave: (value: string) => void;
   className?: string;
   placeholder?: string;
-  variant?: 'title' | 'subtitle' | 'text';
+  variant?: "title" | "subtitle" | "text";
 }
 
-export function InlineEdit({ 
-  value, 
-  onSave, 
-  className, 
+export function InlineEdit({
+  value,
+  onSave,
+  className,
   placeholder = "Click to edit...",
-  variant = 'text'
+  variant = "text",
 }: InlineEditProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(value);
@@ -40,18 +40,18 @@ export function InlineEdit({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleSave();
-    } else if (e.key === 'Escape') {
+    } else if (e.key === "Escape") {
       setEditValue(value);
       setIsEditing(false);
     }
   };
 
   const variantClasses = {
-    title: 'text-2xl font-bold',
-    subtitle: 'text-lg font-semibold',
-    text: 'text-sm'
+    title: "text-2xl font-bold",
+    subtitle: "text-lg font-semibold",
+    text: "text-sm",
   };
 
   if (isEditing) {
@@ -63,9 +63,9 @@ export function InlineEdit({
         onBlur={handleSave}
         onKeyDown={handleKeyDown}
         className={cn(
-          'bg-transparent border-b-2 border-primary outline-none px-1',
+          "bg-transparent border-b-2 border-primary outline-none px-1",
           variantClasses[variant],
-          className
+          className,
         )}
         placeholder={placeholder}
       />
@@ -73,16 +73,17 @@ export function InlineEdit({
   }
 
   return (
-    <div
+    <button
+      type="button"
       onClick={() => setIsEditing(true)}
       className={cn(
-        'cursor-pointer hover:bg-muted/50 rounded px-1 py-0.5 transition-colors',
+        "cursor-pointer hover:bg-muted/50 rounded px-1 py-0.5 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-none bg-transparent text-left",
         variantClasses[variant],
         className,
-        !value && 'text-muted-foreground italic'
+        !value && "text-muted-foreground italic",
       )}
     >
       {value || placeholder}
-    </div>
+    </button>
   );
 }

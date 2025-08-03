@@ -1,11 +1,11 @@
-import { Trash2, GripVertical } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { InlineEdit } from '@/components/ui/inline-edit';
-import { GridItem } from '@/types';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { cn } from '@/lib/utils';
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { GripVertical, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { InlineEdit } from "@/components/ui/inline-edit";
+import { cn } from "@/lib/utils";
+import type { GridItem } from "@/types";
 
 interface ItemCardProps {
   item: GridItem;
@@ -14,14 +14,9 @@ interface ItemCardProps {
 }
 
 export function ItemCard({ item, onUpdate, onDelete }: ItemCardProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: item.id });
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: item.id,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -38,7 +33,7 @@ export function ItemCard({ item, onUpdate, onDelete }: ItemCardProps) {
       style={style}
       className={cn(
         "group relative shadow-sm hover:shadow-md transition-all",
-        isDragging && "opacity-50"
+        isDragging && "opacity-50",
       )}
     >
       <CardContent className="p-3">
@@ -50,7 +45,7 @@ export function ItemCard({ item, onUpdate, onDelete }: ItemCardProps) {
           >
             <GripVertical className="h-4 w-4" />
           </button>
-          
+
           <div className="flex-1 min-w-0">
             <InlineEdit
               value={item.title}

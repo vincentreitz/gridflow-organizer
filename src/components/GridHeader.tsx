@@ -1,18 +1,15 @@
-import { Plus, ChevronDown } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { BoardTitleWithDelete } from '@/components/BoardTitleWithDelete';
+import { ChevronDown, Plus } from "lucide-react";
+import { BoardTitleWithDelete } from "@/components/BoardTitleWithDelete";
+import { SimpleThemeToggle } from "@/components/theme-toggle";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { SimpleThemeToggle } from '@/components/theme-toggle';
-import { Grid } from '@/types';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/dropdown-menu";
+import type { Grid } from "@/types";
 
 interface GridHeaderProps {
   currentGrid: Grid | null;
@@ -34,7 +31,7 @@ export function GridHeader({
   return (
     <Card className="flex items-center justify-between p-6 shadow-md">
       <div className="flex-1" />
-      
+
       <div className="flex-1 flex justify-center">
         {currentGrid && (
           <BoardTitleWithDelete
@@ -49,13 +46,8 @@ export function GridHeader({
 
       <div className="flex-1 flex justify-end items-center gap-2">
         <SimpleThemeToggle />
-        
-        <Button
-          onClick={onGridCreate}
-          size="sm"
-          variant="secondary"
-          className="gap-2 shadow-card"
-        >
+
+        <Button onClick={onGridCreate} size="sm" variant="secondary" className="gap-2 shadow-card">
           <Plus className="h-4 w-4" />
           New Grid
         </Button>
@@ -63,9 +55,7 @@ export function GridHeader({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="sm" className="gap-2 shadow-card">
-              <span className="max-w-32 truncate">
-                {currentGrid?.title || 'Select Grid'}
-              </span>
+              <span className="max-w-32 truncate">{currentGrid?.title || "Select Grid"}</span>
               <ChevronDown className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -74,16 +64,12 @@ export function GridHeader({
               <DropdownMenuItem
                 key={grid.id}
                 onClick={() => onGridSelect(grid.id)}
-                className={grid.id === currentGrid?.id ? 'bg-accent' : ''}
+                className={grid.id === currentGrid?.id ? "bg-accent" : ""}
               >
-                <span className="truncate">{grid.title || 'Untitled Grid'}</span>
+                <span className="truncate">{grid.title || "Untitled Grid"}</span>
               </DropdownMenuItem>
             ))}
-            {grids.length === 0 && (
-              <DropdownMenuItem disabled>
-                No grids available
-              </DropdownMenuItem>
-            )}
+            {grids.length === 0 && <DropdownMenuItem disabled>No grids available</DropdownMenuItem>}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

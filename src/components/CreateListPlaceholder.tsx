@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card } from '@/components/ui/card';
+import { Plus } from "lucide-react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 interface CreateListPlaceholderProps {
   onCreateList: (title: string) => void;
@@ -10,21 +10,21 @@ interface CreateListPlaceholderProps {
 
 export function CreateListPlaceholder({ onCreateList }: CreateListPlaceholderProps) {
   const [isCreating, setIsCreating] = useState(false);
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState("");
 
   const handleCreate = () => {
     if (title.trim()) {
       onCreateList(title.trim());
-      setTitle('');
+      setTitle("");
       setIsCreating(false);
     }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleCreate();
-    } else if (e.key === 'Escape') {
-      setTitle('');
+    } else if (e.key === "Escape") {
+      setTitle("");
       setIsCreating(false);
     }
   };
@@ -57,7 +57,7 @@ export function CreateListPlaceholder({ onCreateList }: CreateListPlaceholderPro
             </Button>
             <Button
               onClick={() => {
-                setTitle('');
+                setTitle("");
                 setIsCreating(false);
               }}
               variant="outline"
@@ -72,7 +72,7 @@ export function CreateListPlaceholder({ onCreateList }: CreateListPlaceholderPro
   }
 
   return (
-    <Card 
+    <Card
       className="w-80 min-w-80 max-w-96 h-48 flex items-center justify-center border-2 border-dashed border-border/60 bg-muted/20 hover:bg-muted/30 transition-colors cursor-pointer group"
       onClick={() => setIsCreating(true)}
     >

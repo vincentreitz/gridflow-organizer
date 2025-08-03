@@ -1,33 +1,30 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useEffect } from 'react';
 import {
-  DndContext,
-  DragEndEvent,
-  DragOverEvent,
-  DragStartEvent,
-  DragOverlay,
   closestCorners,
+  DndContext,
+  type DragEndEvent,
+  type DragOverEvent,
+  DragOverlay,
+  type DragStartEvent,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
-} from '@dnd-kit/core';
+} from "@dnd-kit/core";
+import { restrictToWindowEdges } from "@dnd-kit/modifiers";
 import {
+  horizontalListSortingStrategy,
   SortableContext,
   sortableKeyboardCoordinates,
-  horizontalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { restrictToWindowEdges } from '@dnd-kit/modifiers';
-
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { GridHeader } from '@/components/GridHeader';
-import { ItemList } from '@/components/ItemList';
-import { CreateListPlaceholder } from '@/components/CreateListPlaceholder';
-import { useGridStore } from '@/store/useGridStore';
-import { useState } from 'react';
-import { ItemList as ItemListType } from '@/types';
-import { cn } from '@/lib/utils';
+} from "@dnd-kit/sortable";
+import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { CreateListPlaceholder } from "@/components/CreateListPlaceholder";
+import { GridHeader } from "@/components/GridHeader";
+import { ItemList } from "@/components/ItemList";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useGridStore } from "@/store/useGridStore";
+import type { ItemList as ItemListType } from "@/types";
 
 function IndexPage() {
   const {
@@ -50,28 +47,28 @@ function IndexPage() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [activeDraggedItem, setActiveDraggedItem] = useState<ItemListType | null>(null);
 
-  const currentGrid = grids.find(g => g.id === currentGridId) || null;
+  const currentGrid = grids.find((g) => g.id === currentGridId) || null;
 
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   // Create first grid if none exists
   useEffect(() => {
     if (grids.length === 0) {
-      createGrid('My Task Board');
+      createGrid("My Task Board");
     }
   }, [grids.length, createGrid]);
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);
-    
+
     // Store the dragged item for overlay
     if (currentGrid) {
-      const draggedList = currentGrid.lists.find(list => list.id === event.active.id);
+      const draggedList = currentGrid.lists.find((list) => list.id === event.active.id);
       if (draggedList) {
         setActiveDraggedItem(draggedList);
       }
@@ -80,17 +77,17 @@ function IndexPage() {
 
   const handleDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
-    
+
     if (!over) return;
 
     const activeId = active.id as string;
     const overId = over.id as string;
 
     // Handle moving items between lists
-    if (activeId.startsWith('item-') && overId.startsWith('list-')) {
-      const sourceListId = activeId.split('-')[1];
-      const targetListId = overId.split('-')[1];
-      
+    if (activeId.startsWith("item-") && overId.startsWith("list-")) {
+      const sourceListId = activeId.split("-")[1];
+      const targetListId = overId.split("-")[1];
+
       if (sourceListId !== targetListId && currentGrid) {
         // Move item to different list logic would go here
         // For now, we'll handle this in drag end
@@ -100,7 +97,7 @@ function IndexPage() {
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    
+
     if (!over || !currentGrid) {
       setActiveId(null);
       setActiveDraggedItem(null);
@@ -111,37 +108,41 @@ function IndexPage() {
     const overId = over.id as string;
 
     // Reorder lists
-    if (currentGrid.lists.some(list => list.id === activeId) && 
-        currentGrid.lists.some(list => list.id === overId)) {
-      
-      const oldIndex = currentGrid.lists.findIndex(list => list.id === activeId);
-      const newIndex = currentGrid.lists.findIndex(list => list.id === overId);
+    if (
+      currentGrid.lists.some((list) => list.id === activeId) &&
+      currentGrid.lists.some((list) => list.id === overId)
+    ) {
+      const oldIndex = currentGrid.lists.findIndex((list) => list.id === activeId);
+      const newIndex = currentGrid.lists.findIndex((list) => list.id === overId);
 
       if (oldIndex !== newIndex) {
         const newOrder = [...currentGrid.lists];
         const [removed] = newOrder.splice(oldIndex, 1);
         newOrder.splice(newIndex, 0, removed);
-        reorderLists(newOrder.map(list => list.id));
+        reorderLists(newOrder.map((list) => list.id));
       }
     }
 
     // Reorder items within the same list
-    const activeList = currentGrid.lists.find(list => 
-      list.items.some(item => item.id === activeId)
+    const activeList = currentGrid.lists.find((list) =>
+      list.items.some((item) => item.id === activeId),
     );
-    const overList = currentGrid.lists.find(list => 
-      list.items.some(item => item.id === overId)
+    const overList = currentGrid.lists.find((list) =>
+      list.items.some((item) => item.id === overId),
     );
 
     if (activeList && overList && activeList.id === overList.id) {
-      const oldIndex = activeList.items.findIndex(item => item.id === activeId);
-      const newIndex = activeList.items.findIndex(item => item.id === overId);
+      const oldIndex = activeList.items.findIndex((item) => item.id === activeId);
+      const newIndex = activeList.items.findIndex((item) => item.id === overId);
 
       if (oldIndex !== newIndex) {
         const newOrder = [...activeList.items];
         const [removed] = newOrder.splice(oldIndex, 1);
         newOrder.splice(newIndex, 0, removed);
-        reorderItems(activeList.id, newOrder.map(item => item.id));
+        reorderItems(
+          activeList.id,
+          newOrder.map((item) => item.id),
+        );
       }
     }
 
@@ -187,7 +188,7 @@ function IndexPage() {
           <ScrollArea className="w-full">
             <div className="flex gap-6 pb-6">
               <SortableContext
-                items={currentGrid.lists.map(list => list.id)}
+                items={currentGrid.lists.map((list) => list.id)}
                 strategy={horizontalListSortingStrategy}
               >
                 {currentGrid.lists.map((list) => (
@@ -228,6 +229,6 @@ function IndexPage() {
   );
 }
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute("/")({
   component: IndexPage,
 });
