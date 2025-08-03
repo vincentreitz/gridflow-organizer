@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+echo "🔧 Running Biome format and lint..."
+
+# Format and lint all files
+npm run format
+npm run lint:fix
+
+# Add all modified files to staging
+git add -A
+
+echo "✅ Pre-commit hook completed successfully!" 
