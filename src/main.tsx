@@ -5,10 +5,16 @@ import App from "./App";
 import "./index.css";
 import { routeTree } from "./routeTree.gen";
 
-// Create a new router instance
 const router = createRouter({
   routeTree,
+  basepath: import.meta.env.DEV ? "/" : "/gridflow-organizer",
 });
+
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
 
 const rootElement = document.getElementById("root");
 if (!rootElement) {
