@@ -61,13 +61,7 @@ export function GridHeader({
               <ChevronDown className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            side="bottom"
-            sideOffset={4}
-            className="w-56"
-            style={{ transformOrigin: "top right" }}
-          >
+          <DropdownMenuContent align="end" side="bottom" sideOffset={4} className="w-56">
             {grids.map((grid) => (
               <DropdownMenuItem
                 key={grid.id}
