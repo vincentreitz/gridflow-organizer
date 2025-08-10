@@ -1,12 +1,31 @@
-#!/usr/bin/env sh
+#!/bin/sh
 
-echo "🔧 Running Biome format and lint..."
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.local/share/pnpm:$HOME/.nvm/versions/node/*/bin:$PATH"
 
-# Format and lint all files
-npm run format
-npm run lint:fix
+if ! command -v node >/dev/null 2>&1; then
+    NODE_PATHS="$HOME/.nvm/versions/node/*/bin /usr/local/bin /usr/bin $HOME/.local/bin"
+    for path in $NODE_PATHS; do
+        if [ -x "$path/node" ]; then
+            export PATH="$path:$PATH"
+            break
+        fi
+    done
+fi
 
-# Add all modified files to staging
-git add -A
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(js|jsx|ts|tsx)$' || true)
+[ -z "$STAGED_FILES" ] && exit 0
+
+echo "Running format check on staged files..."
+
+if ! pnpm biome format --write $STAGED_FILES; then
+    echo "❌ Formatting failed"
+    exit 1
+fi
+
+echo "$STAGED_FILES" | while IFS= read -r file; do
+    [ -f "$file" ] && git add "$file"
+done
+
+echo "✅ Format check passed."
 
 echo "✅ Pre-commit hook completed successfully!" 
