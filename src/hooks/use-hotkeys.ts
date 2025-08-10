@@ -21,7 +21,7 @@ export function useHotkeys(
       if (!enabled) return;
 
       const hotkey = keys.toLowerCase();
-      const pressed = [];
+      const pressed: string[] = [];
 
       if (event.ctrlKey || event.metaKey) pressed.push("mod");
       if (event.shiftKey) pressed.push("shift");

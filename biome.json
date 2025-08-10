@@ -3,13 +3,13 @@
   "files": {
     "includes": [
       "src/**/*",
+      "!src/routeTree.gen.ts",
       "!dist/**/*",
       "!node_modules/**/*",
       "!build/**/*",
       "!*.min.js",
       "!coverage/**/*",
-      "!.vite/**/*",
-      "!routeTree.gen.ts"
+      "!.vite/**/*"
     ]
   },
   "formatter": {
@@ -24,7 +24,8 @@
       "recommended": true,
       "suspicious": {
         "noArrayIndexKey": "warn",
-        "noExplicitAny": "warn"
+        "noExplicitAny": "warn",
+        "noDocumentCookie": "off"
       },
       "correctness": {
         "useExhaustiveDependencies": "warn",
