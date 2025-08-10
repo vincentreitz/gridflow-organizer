@@ -1,5 +1,6 @@
 import { ChevronDown, Plus } from "lucide-react";
 import { BoardTitleWithDelete } from "@/components/BoardTitleWithDelete";
+import { SettingsDropdown } from "@/components/SettingsDropdown";
 import { SimpleThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -45,6 +46,7 @@ export function GridHeader({
       </div>
 
       <div className="flex-1 flex justify-end items-center gap-2">
+        <SettingsDropdown />
         <SimpleThemeToggle />
 
         <Button onClick={onGridCreate} size="sm" variant="secondary" className="gap-2 shadow-card">
