@@ -142,7 +142,7 @@ export function ItemList({
       <Separator />
 
       {/* Items */}
-      <CardContent className="flex-1 p-4">
+      <CardContent className="flex-1 p-4 max-h-[50vh] overflow-auto">
         <div ref={setDroppableRef} className="flex flex-col space-y-2">
           <SortableContext
             items={list.items.map((item) => item.id)}
