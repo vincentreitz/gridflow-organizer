@@ -54,26 +54,27 @@ export function GridHeader({
           New Grid
         </Button>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="gap-2 shadow-card">
-              <span className="max-w-32 truncate">{currentGrid?.title || "Select Grid"}</span>
-              <ChevronDown className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" side="bottom" sideOffset={4} className="w-56">
-            {grids.map((grid) => (
-              <DropdownMenuItem
-                key={grid.id}
-                onClick={() => onGridSelect(grid.id)}
-                className={grid.id === currentGrid?.id ? "bg-accent" : ""}
-              >
-                <span className="truncate">{grid.title || "Untitled Grid"}</span>
-              </DropdownMenuItem>
-            ))}
-            {grids.length === 0 && <DropdownMenuItem disabled>No grids available</DropdownMenuItem>}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {grids.length > 1 && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="gap-2 shadow-card">
+                <span className="max-w-32 truncate">{currentGrid?.title || "Select Grid"}</span>
+                <ChevronDown className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" side="bottom" sideOffset={4} className="w-56">
+              {grids.map((grid) => (
+                <DropdownMenuItem
+                  key={grid.id}
+                  onClick={() => onGridSelect(grid.id)}
+                  className={grid.id === currentGrid?.id ? "bg-accent" : ""}
+                >
+                  <span className="truncate">{grid.title || "Untitled Grid"}</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
     </Card>
   );
