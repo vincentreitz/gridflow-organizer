@@ -118,8 +118,61 @@
     min-height: 100vh;
   }
 
-  /* Smooth transitions */
-  * {
+  /* Dropdown animations */
+  @keyframes dropdown-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(-2px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  @keyframes dropdown-out {
+    from {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.95) translateY(-2px);
+    }
+  }
+
+  /* Dropdown content animations */
+  [data-radix-popper-content-wrapper] [data-state="open"] {
+    animation: dropdown-in 0.2s ease-out;
+  }
+
+  [data-radix-popper-content-wrapper] [data-state="closed"] {
+    animation: dropdown-out 0.15s ease-in;
+  }
+
+  [data-radix-popper-content-wrapper] [data-side="bottom"] {
+    transform-origin: top center;
+  }
+
+  [data-radix-popper-content-wrapper] [data-side="top"] {
+    transform-origin: bottom center;
+  }
+
+  [data-radix-popper-content-wrapper] [data-side="left"] {
+    transform-origin: right center;
+  }
+
+  [data-radix-popper-content-wrapper] [data-side="right"] {
+    transform-origin: left center;
+  }
+
+  /* Override global transitions for dropdown content */
+  [data-radix-popper-content-wrapper] * {
+    transition: none !important;
+  }
+
+  /* Smooth transitions - exclude dropdown animations */
+  *:not([data-radix-popper-content-wrapper]):not([data-state]) {
     transition:
       color 0.2s ease,
       background-color 0.2s ease,
