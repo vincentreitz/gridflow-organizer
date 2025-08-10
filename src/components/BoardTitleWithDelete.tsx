@@ -31,7 +31,7 @@ export function BoardTitleWithDelete({
   grids,
   className,
 }: BoardTitleWithDeleteProps) {
-  const [_isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -84,49 +84,47 @@ export function BoardTitleWithDelete({
         onEditingChange={setIsEditing}
       />
 
-      {isEditing && (
-        <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-          <AlertDialogTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              disabled={!canDelete}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              className={cn(
-                "absolute -right-6 h-6 w-6 p-0 transition-all duration-200 z-10",
-                canDelete
-                  ? "text-muted-foreground hover:text-destructive"
-                  : "text-muted-foreground/50 cursor-not-allowed",
-                "opacity-100 scale-100",
-              )}
+      <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+        <AlertDialogTrigger asChild>
+          <Button
+            variant="ghost"
+            size="sm"
+            disabled={!canDelete}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className={cn(
+              "absolute -right-6 h-6 w-6 p-0 transition-all duration-200 z-10",
+              canDelete
+                ? "text-muted-foreground hover:text-destructive"
+                : "text-muted-foreground/50 cursor-not-allowed",
+              isHovered && !isEditing ? "opacity-100 scale-100" : "opacity-0 scale-95",
+            )}
+          >
+            <Trash2 className="h-3 w-3" />
+            <span className="sr-only">
+              {canDelete ? "Delete board" : "Cannot delete the last board"}
+            </span>
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Board</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete "{currentGrid.title}"? This action cannot be undone.
+              All lists and items in this board will be permanently removed.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              <Trash2 className="h-3 w-3" />
-              <span className="sr-only">
-                {canDelete ? "Delete board" : "Cannot delete the last board"}
-              </span>
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Delete Board</AlertDialogTitle>
-              <AlertDialogDescription>
-                Are you sure you want to delete "{currentGrid.title}"? This action cannot be undone.
-                All lists and items in this board will be permanently removed.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={handleDelete}
-                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              >
-                Delete Board
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      )}
+              Delete Board
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </fieldset>
   );
 }
